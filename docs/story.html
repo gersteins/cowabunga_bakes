@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Story — Cowabunga Bakes</title>
+  <meta name="description" content="Learn about how Cowabunga Bakes started — a self-taught baker making peanut-free, scratch-made custom cakes in Potomac, MD.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { background: var(--surface); }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .story-text p {
+      color: var(--ink-soft);
+      margin-bottom: 18px;
+      font-size: 1.05rem;
+      line-height: 1.75;
+    }
+
+    .story-text p:last-child { marfgin-bottom: 0; }
+
+    .story-highlight {
+      background: var(--rose-light);
+      border-left: 3px solid var(--rose);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 24px 28px;
+      margin: 28px 0;
+    }
+
+    .story-highlight p {
+      color: var(--ink) !important;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.15rem !important;
+      margin: 0 !important;
+    }
+
+    /* ── Carousel ── */
+    .hero-carousel {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+      transform: rotate(1.2deg);
+      transition: transform 0.4s ease;
+      aspect-ratio: 1 / 1;
+    }
+
+    .hero-carousel:hover { transform: rotate(0deg) scale(1.01); }
+
+    .carousel-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease;
+    }
+
+    .carousel-slide.active { opacity: 1; pointer-events: auto; }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-photo-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 20px 20px 16px;
+      background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 12px;
+      right: 16px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .carousel-dots button {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.45);
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.3s;
+    }
+
+    .carousel-dots button.active { background: rgba(255,255,255,0.95); }
+
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(4px);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      font-size: 1rem;
+      transition: background 0.2s;
+      z-index: 2;
+    }
+
+    .carousel-arrow:hover { background: rgba(255,255,255,0.45); }
+    .carousel-arrow.prev { left: 10px; }
+    .carousel-arrow.next { right: 10px; }
+
+    .story-cta {
+      margin-top: 40px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      .story-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="main-nav">
+    <a href="index.html" class="nav-brand">Cowabunga Bakes</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="story.html" class="active">My Story</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="story.html" class="active">My Story</a>
+    <a href="menu.html">Menu</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <main class="section">
+    <div class="container">
+      <div class="story-grid">
+        <div class="story-text fade-in">
+          <p class="section-label">My Story</p>
+          <h1 class="section-title">Baked with <em>love</em></h1>
+          <p>It started with my daughter. She has a peanut allergy, and I just couldn't find a local cake shop that was both safe for her <em>and</em> delicious. So I learned to bake myself.</p>
+
+          <div class="story-highlight">
+            <p>I'm completely self-taught, and everything is made completely from scratch — no mixes, no shortcuts.</p>
+          </div>
+
+          <p>What I love most about this work is the collaboration. Every order starts with a conversation. I design every product custom to the request of my amazing clients — or their kids — and their <em>wonderful, fantastical ideas</em>.</p>
+          <p>The visions that make me happiest are the ones that are short, sweet, and completely wild. The kind that arrive with total confidence and zero compromise.</p>
+
+          <div class="story-cta">
+            <a href="contact.html" class="btn btn-primary">Order a Cake</a>
+            <a href="gallery.html" class="btn btn-secondary">See the Gallery</a>
+          </div>
+        </div>
+
+        <div class="story-sidebar fade-in fade-in-delay-1" style="padding-top: 3rem;">
+          <div class="hero-carousel" id="storyCarousel">
+
+            <div class="carousel-slide active">
+              <a href="https://www.instagram.com/p/DSOFa4dkTOP/" target="_blank" rel="noopener">
+                <img src="photos/disney_castle_birthday_cake.jpg">
+              </a>
+              <div class="hero-photo-caption">Magic Kingdom</div>
+            </div>
+
+            <div class="carousel-slide">
+              <a href="https://www.instagram.com/p/DSEJI08kS5p/" target="_blank" rel="noopener">
+                <img src="photos/toy_story_birthday_cake.jpg">
+              </a>
+              <div class="hero-photo-caption">Toy Story</div>
+            </div>
+
+            <div class="carousel-slide">
+              <a href="https://www.instagram.com/p/DPNJxCwEalb/" target="_blank" rel="noopener">
+                <img src="photos/donkey_kong_barrel_cake.jpg">
+              </a>
+              <div class="hero-photo-caption">Donkey Kong</div>
+            </div>
+
+            <div class="carousel-slide">
+              <a href="https://www.instagram.com/p/DV6URjAkY2G/" target="_blank" rel="noopener">
+                <img src="photos/dogman_and_petey.jpg">
+              </a>
+              <div class="hero-photo-caption">Dog Man and Petey</div>
+            </div>
+
+            <div class="carousel-slide">
+              <a href="https://www.instagram.com/p/DJxNUp8S1fe/" target="_blank" rel="noopener">
+                <img src="photos/pink_ruffle_ombre_cake.jpg">
+              </a>
+              <div class="hero-photo-caption">Just pink ombre</div>
+            </div>
+
+            <div class="carousel-slide">
+              <a href="https://www.instagram.com/p/DHRh_Z1yv6N/" target="_blank" rel="noopener">
+                <img src="photos/wolf_disco_birthday_cake.jpg">
+              </a>
+              <div class="hero-photo-caption">Disco wolfpack</div>
+            </div>
+
+            <button class="carousel-arrow prev" id="storyCarouselPrev" aria-label="Previous photo">&#8592;</button>
+            <button class="carousel-arrow next" id="storyCarouselNext" aria-label="Next photo">&#8594;</button>
+            <div class="carousel-dots" id="storyCarouselDots"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">Cowabunga Bakes</div>
+      <p class="footer-tagline">Custom cakes &amp; desserts made from scratch · Potomac, MD</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="story.html">My Story</a>
+        <a href="menu.html">Menu</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://www.instagram.com/cowabunga_bakes/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <div class="footer-legal">
+        <p>Items are prepared in a home kitchen. Allergen cross-contamination cannot be guaranteed.</p>
+        <p>&copy; 2026 Cowabunga Bakes · All rights reserved</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script>
+    // Fade-in
+    document.querySelectorAll('.fade-in').forEach(el => {
+      new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+      }, { threshold: 0.1 }).observe(el);
+    });
+
+    // Story carousel
+    const storySlides = document.querySelectorAll('#storyCarousel .carousel-slide');
+    const storyDots = document.getElementById('storyCarouselDots');
+    let storyCurrent = 0;
+
+    storySlides.forEach((_, i) => {
+      const btn = document.createElement('button');
+      btn.setAttribute('aria-label', `Photo ${i + 1}`);
+      if (i === 0) btn.classList.add('active');
+      btn.addEventListener('click', () => storyGoTo(i));
+      storyDots.appendChild(btn);
+    });
+
+    function storyGoTo(n) {
+      storySlides[storyCurrent].classList.remove('active');
+      storyDots.children[storyCurrent].classList.remove('active');
+      storyCurrent = (n + storySlides.length) % storySlides.length;
+      storySlides[storyCurrent].classList.add('active');
+      storyDots.children[storyCurrent].classList.add('active');
+    }
+
+    document.getElementById('storyCarouselPrev').addEventListener('click', () => storyGoTo(storyCurrent - 1));
+    document.getElementById('storyCarouselNext').addEventListener('click', () => storyGoTo(storyCurrent + 1));
+
+    setInterval(() => storyGoTo(storyCurrent + 1), 6000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu — Cowabunga Bakes</title>
+  <meta name="description" content="Custom cakes, cupcakes, cake pops, sugar cookies & more — made to order from scratch in Potomac, MD. View pricing and flavors.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .menu-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .menu-header .section-title { margin-bottom: 12px; }
+
+    .menu-header p {
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .menu-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+
+    .menu-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+
+    .menu-card h2 {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .menu-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-size: 0.875rem;
+    }
+
+    .menu-row:last-child { margin-bottom: 0; }
+
+    .menu-row .label {
+      color: var(--ink-soft);
+      flex: 1;
+    }
+
+    .menu-row .price {
+      font-weight: 600;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .menu-note {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      margin-bottom: 8px;
+    }
+
+    .menu-note:last-child { margin-bottom: 0; }
+
+    .menu-divider {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 36px;
+      margin-bottom: 20px;
+    }
+
+    .menu-divider h2 {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .flavors-list {
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      line-height: 2;
+    }
+
+    .flavors-list span {
+      display: inline-block;
+      background: var(--rose-light);
+      color: var(--rose);
+      border-radius: 100px;
+      padding: 3px 12px;
+      margin: 3px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .add-ons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .add-on-card {
+      background: var(--gold-light);
+      border: 1px solid #e3d0b5;
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .add-on-card .label {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+    }
+
+    .add-on-card .price {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    .menu-footer-note {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .menu-footer-note p { margin-bottom: 4px; }
+    .menu-footer-note p:last-child { margin-bottom: 0; }
+
+    .order-cta {
+      text-align: center;
+      margin-top: 48px;
+    }
+
+    .order-cta p {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .menu-grid { grid-template-columns: 1fr 1fr; }
+      .add-ons-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 580px) {
+      .menu-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="main-nav">
+    <a href="index.html" class="nav-brand">Cowabunga Bakes</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="story.html">My Story</a></li>
+      <li><a href="menu.html" class="active">Menu</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="story.html">My Story</a>
+    <a href="menu.html" class="active">Menu</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <main class="section">
+    <div class="container">
+      <div class="menu-header fade-in">
+        <p class="section-label">Menu</p>
+        <h1 class="section-title">Custom Cakes &amp; <em>Desserts</em></h1>
+        <p>All items are made to order. Pricing is starting price — final cost depends on design complexity.</p>
+      </div>
+
+      <div class="menu-grid">
+        <div class="menu-card fade-in">
+          <h2>Cupcake Pull-Apart Cakes</h2>
+          <div class="menu-row">
+            <span class="label">24 cupcakes</span>
+            <span class="price">from $160</span>
+          </div>
+          <div class="menu-row">
+            <span class="label">36 cupcakes</span>
+            <span class="price">from $215</span>
+          </div>
+        </div>
+
+        <div class="menu-card fade-in fade-in-delay-1">
+          <h2>Round Cakes</h2>
+          <div class="menu-row">
+            <span class="label">6" round · serves ~8–10</span>
+            <span class="price">from $110</span>
+          </div>
+          <div class="menu-row">
+            <span class="label">8" round · serves ~16–20</span>
+            <span class="price">from $160</span>
+          </div>
+          <div class="menu-row">
+            <span class="label">9" round · serves ~20–24</span>
+            <span class="price">from $180</span>
+          </div>
+        </div>
+
+        <div class="menu-card fade-in fade-in-delay-2">
+          <h2>Sheet Cakes</h2>
+          <div class="menu-row">
+            <span class="label">Quarter Sheet · serves ~18–22</span>
+            <span class="price">from $170</span>
+          </div>
+          <div class="menu-row">
+            <span class="label">Half Sheet · serves ~35–40</span>
+            <span class="price">from $215</span>
+          </div>
+        </div>
+
+        <div class="menu-card fade-in">
+          <h2>Cupcakes</h2>
+          <div class="menu-row" style="margin-top:10px">
+            <span class="label">Per dozen</span>
+            <span class="price">from $85</span>
+          </div>
+        </div>
+
+        <div class="menu-card fade-in fade-in-delay-1">
+          <h2>Cake Pops</h2>
+          <div class="menu-row">
+            <span class="label">Each (min. order: 24)</span>
+            <span class="price">from $5</span>
+          </div>
+        </div>
+
+        <div class="menu-card fade-in fade-in-delay-2">
+          <h2>Sugar Cookies</h2>
+          <div class="menu-row">
+            <span class="label">Two dozen (minimum)</span>
+            <span class="price">from $110</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="fade-in" style="text-align:center;font-size:0.9rem;color:var(--ink-soft);margin-bottom:32px;">Serving a larger crowd? <a href="contact.html" style="color:var(--rose);text-decoration:none;font-weight:500;">Reach out</a> to inquire about larger orders and custom pricing.</p>
+
+      <div class="menu-divider fade-in">
+        <h2>Flavors</h2>
+        <div class="flavors-list">
+          <span>Vanilla</span>
+          <span>Chocolate</span>
+          <span>Funfetti</span>
+          <span>Carrot</span>
+          <span>Red Velvet</span>
+          <span>Lemon</span>
+          <span>Strawberry</span>
+          <span>Snickerdoodle</span>
+          <span>Oreo</span>
+        </div>
+        <p style="text-align:center;font-size:0.85rem;color:var(--ink-soft);margin-top:16px;font-style:italic">Have something else in mind? Just ask!</p>
+      </div>
+
+      <div class="add-ons-grid">
+        <div class="add-on-card fade-in">
+          <span class="label">Multiple flavors in one order</span>
+          <span class="price">+$10 / flavor</span>
+        </div>
+        <div class="add-on-card fade-in fade-in-delay-1">
+          <span class="label">Dairy-free or gluten-free</span>
+          <span class="price">from +$15</span>
+        </div>
+        <div class="add-on-card fade-in fade-in-delay-2">
+          <span class="label">Specialty fillings or curds</span>
+          <span class="price">from +$15</span>
+        </div>
+      </div>
+
+      <div class="menu-footer-note fade-in">
+        <p>Items are prepared in a home kitchen where allergens may be present. Cross-contamination cannot be guaranteed.</p>
+        <p>Custom designs and cake flavors may increase pricing depending on complexity.</p>
+        <p>Pickup only in Potomac, MD &nbsp;·&nbsp; Pricing current as of 2026</p>
+      </div>
+
+      <div class="order-cta fade-in">
+        <p>Ready to order? Get in touch and let's make something amazing.</p>
+        <a href="contact.html" class="btn btn-primary">Start Your Order</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">Cowabunga Bakes</div>
+      <p class="footer-tagline">Custom cakes &amp; desserts made from scratch · Potomac, MD</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="story.html">My Story</a>
+        <a href="menu.html">Menu</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://www.instagram.com/cowabunga_bakes/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <div class="footer-legal">
+        <p>Items are prepared in a home kitchen. Allergen cross-contamination cannot be guaranteed.</p>
+        <p>&copy; 2026 Cowabunga Bakes · All rights reserved</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script>
+    document.querySelectorAll('.fade-in').forEach(el => {
+      new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+      }, { threshold: 0.1 }).observe(el);
+    });
+  </script>
+</body>
+</html>

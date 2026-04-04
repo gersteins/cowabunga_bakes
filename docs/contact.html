@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Cowabunga Bakes</title>
+  <meta name="description" content="Order a custom cake or dessert from Cowabunga Bakes. Message on Instagram to get started. Pickup in Potomac, MD.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .contact-text p {
+      color: var(--ink-soft);
+      margin-bottom: 18px;
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    .contact-text p:last-child { margin-bottom: 0; }
+
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px;
+    }
+
+    .contact-card h2 {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .contact-card .sub {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .dm-button {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      color: #fff;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      transition: var(--transition);
+      text-align: left;
+    }
+
+    .dm-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(131,58,180,0.3);
+    }
+
+    .dm-button .dm-icon {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .dm-button .dm-label { flex: 1; }
+    .dm-button .dm-label span {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 400;
+      opacity: 0.85;
+      margin-top: 2px;
+    }
+
+    .contact-details {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-detail-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+    }
+
+    .detail-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 900px) {
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="main-nav">
+    <a href="index.html" class="nav-brand">Cowabunga Bakes</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="story.html">My Story</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="story.html">My Story</a>
+    <a href="menu.html">Menu</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html" class="active">Contact</a>
+  </div>
+
+  <main class="section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-text fade-in">
+          <p class="section-label">Contact</p>
+          <h1 class="section-title">Let's make something <em>extraordinary</em></h1>
+          <p>Every cake starts with a conversation. Tell me what you're dreaming of — however specific, however wild — and I'll figure out how to make it happen.</p>
+          <p>I take orders on a rolling basis. Lead time varies by complexity, so the sooner you reach out the better, especially for parties and events.</p>
+          <p>All pickups are in Potomac, MD.</p>
+        </div>
+
+        <div class="contact-card fade-in fade-in-delay-1">
+          <h2>Send me a message</h2>
+          <p class="sub">The easiest way to reach me is through Instagram DM. Just tap below and tell me what you have in mind — your event date, cake size, and any design ideas you're excited about.</p>
+
+          <a href="https://ig.me/m/cowabunga_bakes" target="_blank" rel="noopener" class="dm-button">
+            <svg class="dm-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.36 2 11.77c0 2.8 1.17 5.31 3.06 7.12V22l2.79-1.53c.74.2 1.53.31 2.35.31 5.52 0 10-4.36 10-9.77C20 6.36 17.52 2 12 2z" fill="white"/>
+              <path d="M7 14l3.5-3.75L13 12l3.5-3.75L13 12l-2.5-1.75L7 14z" fill="url(#dm-gradient)"/>
+              <defs>
+                <linearGradient id="dm-gradient" x1="7" y1="8" x2="16.5" y2="14" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#833ab4"/>
+                  <stop offset="1" stop-color="#fcb045"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="dm-label">
+              Message on Instagram
+              <span>@cowabunga_bakes</span>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H7M17 7v10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+
+          <div class="contact-details">
+            <div class="contact-detail-row">
+              <div class="detail-icon">📍</div>
+              <span>Pickup in Potomac, MD</span>
+            </div>
+            <div class="contact-detail-row">
+              <div class="detail-icon">⏱</div>
+              <span>Lead time varies — reach out early for best availability</span>
+            </div>
+            <div class="contact-detail-row">
+              <div class="detail-icon">✦</div>
+              <span>All items made to order — no two cakes alike</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">Cowabunga Bakes</div>
+      <p class="footer-tagline">Custom cakes &amp; desserts made from scratch · Potomac, MD</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="story.html">My Story</a>
+        <a href="menu.html">Menu</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://www.instagram.com/cowabunga_bakes/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <div class="footer-legal">
+        <p>Items are prepared in a home kitchen. Allergen cross-contamination cannot be guaranteed.</p>
+        <p>&copy; 2026 Cowabunga Bakes · All rights reserved</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script>
+    document.querySelectorAll('.fade-in').forEach(el => {
+      new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+      }, { threshold: 0.1 }).observe(el);
+    });
+  </script>
+</body>
+</html>

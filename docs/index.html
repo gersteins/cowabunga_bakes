@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cowabunga Bakes — Custom Cakes & Desserts in Potomac, MD</title>
+  <meta name="description" content="Custom cakes, cupcakes, sugar cookies & more — made from scratch, peanut-free, and designed around your wildest ideas. Pickup in Potomac, MD.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── Hero ── */
+    #home {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      padding-top: var(--nav-h);
+      padding-left: 24px;
+      padding-right: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 40%, var(--rose-light) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 70%, var(--gold-light) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 64px;
+      padding: 80px 0;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.8rem, 5.5vw, 5rem);
+      font-weight: 700;
+      line-height: 1.08;
+      color: var(--ink);
+      margin-bottom: 28px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--rose);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+      max-width: 420px;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .hero-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+    }
+
+    /* Hero carousel */
+    .hero-carousel {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+      transform: rotate(1.2deg);
+      transition: transform 0.4s ease;
+      aspect-ratio: 1 / 1;
+    }
+
+    .hero-carousel:hover { transform: rotate(0deg) scale(1.01); }
+
+    .carousel-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease;
+    }
+
+    .carousel-slide.active { opacity: 1; pointer-events: auto; }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-photo-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 20px 20px 16px;
+      background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 12px;
+      right: 16px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .carousel-dots button {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.45);
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.3s;
+    }
+
+    .carousel-dots button.active { background: rgba(255,255,255,0.95); }
+
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(4px);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      font-size: 1rem;
+      transition: background 0.2s;
+      z-index: 2;
+    }
+
+    .carousel-arrow:hover { background: rgba(255,255,255,0.45); }
+    .carousel-arrow.prev { left: 10px; }
+    .carousel-arrow.next { right: 10px; }
+
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; padding: 60px 0; }
+      .hero-visual { display: none; }
+    }
+
+    @media (max-width: 580px) {
+      #home { padding-left: 20px; padding-right: 20px; }
+      .hero-title { font-size: clamp(2.4rem, 8vw, 3.5rem); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="main-nav">
+    <a href="index.html" class="nav-brand">Cowabunga Bakes</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="story.html">My Story</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html" class="active">Home</a>
+    <a href="story.html">My Story</a>
+    <a href="menu.html">Menu</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <section id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-eyebrow">Custom Cakes &amp; Desserts · Potomac, MD</p>
+        <h1 class="hero-title">Your <em>wildest</em> ideas, baked to life</h1>
+        <p class="hero-sub">Every cake is made from scratch and designed custom around your vision — no matter how spectacular or wonderfully specific.</p>
+        <div class="hero-actions">
+          <a href="contact.html" class="btn btn-primary">Order a Cake</a>
+          <a href="menu.html" class="btn btn-secondary">See the Menu</a>
+        </div>
+      </div>
+
+      <div class="hero-visual fade-in fade-in-delay-1">
+        <div class="hero-carousel" id="heroCarousel">
+
+          <div class="carousel-slide active">
+            <a href="https://www.instagram.com/p/DWEH0q8lnyI/" target="_blank" rel="noopener">
+              <img src="photos/art_palette_birthday_cake.jpg">
+            </a>
+            <div class="hero-photo-caption">She's an artist at heart</div>
+          </div>
+
+          <div class="carousel-slide">
+            <a href="https://www.instagram.com/p/DLXvuZgReXu/" target="_blank" rel="noopener">
+              <img src="photos/coffee_cup_birthday_cake.jpg">
+            </a>
+            <div class="hero-photo-caption">We have a one year-old, we just need coffee!</div>
+          </div>
+
+          <div class="carousel-slide">
+            <a href="https://www.instagram.com/p/DVyZTtmloiF/" target="_blank" rel="noopener">
+              <img src="photos/chess_birthday_cake.jpg">
+            </a>
+            <div class="hero-photo-caption">Chess, video games, and 6-7</div>
+          </div>
+
+          <div class="carousel-slide">
+            <a href="https://www.instagram.com/p/DRaZW_hkQWy/" target="_blank" rel="noopener">
+              <img src="photos/blues_brothers_birthday_cake.jpg">
+            </a>
+            <div class="hero-photo-caption">I'm a soul man</div>
+          </div>
+
+          <div class="carousel-slide">
+            <a href="https://www.instagram.com/p/DNMYO_8NpLB/" target="_blank" rel="noopener">
+              <img src="photos/fashion_legs_green_cake.jpg">
+            </a>
+            <div class="hero-photo-caption"><!-- GET FROM MAYA --></div>
+          </div>
+
+          <div class="carousel-slide">
+            <a href="https://www.instagram.com/p/C4YxHZsxM4b/" target="_blank" rel="noopener">
+              <img src="photos/tmnt_cupcake_pull_apart.jpg">
+            </a>
+            <div class="hero-photo-caption">My first pull-apart cupcake cake</div>
+          </div>
+
+          <button class="carousel-arrow prev" id="carouselPrev" aria-label="Previous photo">&#8592;</button>
+          <button class="carousel-arrow next" id="carouselNext" aria-label="Next photo">&#8594;</button>
+          <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">Cowabunga Bakes</div>
+      <p class="footer-tagline">Custom cakes &amp; desserts made from scratch · Potomac, MD</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="story.html">My Story</a>
+        <a href="menu.html">Menu</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://www.instagram.com/cowabunga_bakes/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <div class="footer-legal">
+        <p>Items are prepared in a home kitchen. Allergen cross-contamination cannot be guaranteed.</p>
+        <p>&copy; 2026 Cowabunga Bakes · All rights reserved</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script>
+    document.querySelectorAll('.fade-in').forEach(el => {
+      new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+      }, { threshold: 0.1 }).observe(el);
+    });
+
+    // Hero carousel
+    const slides = document.querySelectorAll('#heroCarousel .carousel-slide');
+    const dotsContainer = document.getElementById('carouselDots');
+    let current = 0;
+
+    slides.forEach((_, i) => {
+      const btn = document.createElement('button');
+      btn.setAttribute('aria-label', `Photo ${i + 1}`);
+      if (i === 0) btn.classList.add('active');
+      btn.addEventListener('click', () => goTo(i));
+      dotsContainer.appendChild(btn);
+    });
+
+    function goTo(n) {
+      slides[current].classList.remove('active');
+      dotsContainer.children[current].classList.remove('active');
+      current = (n + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      dotsContainer.children[current].classList.add('active');
+    }
+
+    document.getElementById('carouselPrev').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('carouselNext').addEventListener('click', () => goTo(current + 1));
+
+    setInterval(() => goTo(current + 1), 6000);
+  </script>
+</body>
+</html>
