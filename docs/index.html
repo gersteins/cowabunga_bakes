@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/styles.css">
   <style>
     /* ── Hero ── */
     #home {
@@ -225,49 +225,49 @@
 
           <div class="carousel-slide active">
             <a href="https://www.instagram.com/p/DWEH0q8lnyI/" target="_blank" rel="noopener">
-              <img src="photos/art_palette_birthday_cake.jpg" alt="Art palette birthday cake">
+              <img src="photos/2026-03-14_art_palette_pull_apart.jpg" alt="Art palette birthday cake">
             </a>
             <div class="hero-photo-caption">She's an artist at heart</div>
           </div>
 
           <div class="carousel-slide">
             <a href="https://www.instagram.com/p/DLXvuZgReXu/" target="_blank" rel="noopener">
-              <img src="photos/coffee_cup_birthday_cake.jpg" alt="Coffee cup birthday cake">
+              <img src="photos/2025-06-24_coffee_bean_first_birthday_cake.jpg" alt="Coffee cup birthday cake">
             </a>
             <div class="hero-photo-caption">We have a one year-old, we just need coffee!</div>
           </div>
 
           <div class="carousel-slide">
             <a href="https://www.instagram.com/p/DVyZTtmloiF/" target="_blank" rel="noopener">
-              <img src="photos/chess_birthday_cake.jpg" alt="Chess birthday cake">
+              <img src="photos/2026-03-03_chess_birthday_cake.jpg" alt="Chess birthday cake">
             </a>
             <div class="hero-photo-caption">Chess, video games, and 6-7</div>
           </div>
 
           <div class="carousel-slide">
             <a href="https://www.instagram.com/p/DRaZW_hkQWy/" target="_blank" rel="noopener">
-              <img src="photos/blues_brothers_birthday_cake.jpg" alt="Blues Brothers birthday cake">
+              <img src="photos/2025-11-23_blues_brothers_pull_apart.jpg" alt="Blues Brothers birthday cake">
             </a>
             <div class="hero-photo-caption">I'm a soul man</div>
           </div>
 
           <div class="carousel-slide">
             <a href="https://www.instagram.com/p/DNMYO_8NpLB/" target="_blank" rel="noopener">
-              <img src="photos/fashion_legs_green_cake.jpg" alt="Fashion birthday cake">
+              <img src="photos/2025-08-10_fashion_legs_green_cake.jpg" alt="Fashion birthday cake">
             </a>
             <div class="hero-photo-caption">Fashion blog</div>
           </div>
 
           <div class="carousel-slide">
             <a href="https://www.instagram.com/p/DO4L_BbkU5k/" target="_blank" rel="noopener">
-              <img src="photos/smiley_checkered_birthday_cake.jpg" alt="Smiley checkered birthday cake">
+              <img src="photos/2025-09-20_smiley_checkered_birthday_cake.jpg" alt="Smiley checkered birthday cake">
             </a>
             <div class="hero-photo-caption">Smile emojis, pink, and punk</div>
           </div>
 
           <div class="carousel-slide">
             <a href="https://www.instagram.com/p/DTX2EBREQuT/" target="_blank" rel="noopener">
-              <img src="photos/circus_elephant_birthday_cake.jpg" alt="Circus elephant birthday cake">
+              <img src="photos/2026-01-11_circus_elephant_birthday_cake.jpg" alt="Circus elephant birthday cake">
             </a>
             <div class="hero-photo-caption">Old timey circus</div>
           </div>
@@ -300,7 +300,7 @@
     </div>
   </footer>
 
-  <script src="nav.js"></script>
+  <script src="js/nav.js"></script>
   <script>
     document.querySelectorAll('.fade-in').forEach(el => {
       new IntersectionObserver((entries, obs) => {
@@ -329,10 +329,15 @@
       dotsContainer.children[current].classList.add('active');
     }
 
-    document.getElementById('carouselPrev').addEventListener('click', () => goTo(current - 1));
-    document.getElementById('carouselNext').addEventListener('click', () => goTo(current + 1));
+    let autoplay = setInterval(() => goTo(current + 1), 6000);
 
-    setInterval(() => goTo(current + 1), 6000);
+    function resetAutoplay() {
+      clearInterval(autoplay);
+      autoplay = setInterval(() => goTo(current + 1), 6000);
+    }
+
+    document.getElementById('carouselPrev').addEventListener('click', () => { goTo(current - 1); resetAutoplay(); });
+    document.getElementById('carouselNext').addEventListener('click', () => { goTo(current + 1); resetAutoplay(); });
   </script>
 </body>
 </html>

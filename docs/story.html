@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/styles.css">
   <style>
     body { background: var(--surface); }
 
@@ -192,49 +192,49 @@
 
             <div class="carousel-slide active">
               <a href="https://www.instagram.com/p/DSOFa4dkTOP/" target="_blank" rel="noopener">
-                <img src="photos/disney_castle_birthday_cake.jpg" alt="Disney castle birthday cake">
+                <img src="photos/2025-12-13_disney_castle_birthday_cake.jpg" alt="Disney castle birthday cake">
               </a>
               <div class="hero-photo-caption">Magic Kingdom</div>
             </div>
 
             <div class="carousel-slide">
               <a href="https://www.instagram.com/p/DSEJI08kS5p/" target="_blank" rel="noopener">
-                <img src="photos/toy_story_birthday_cake.jpg" alt="Toy Story birthday cake">
+                <img src="photos/2025-12-08_toy_story_birthday_cake.jpg" alt="Toy Story birthday cake">
               </a>
               <div class="hero-photo-caption">Toy Story</div>
             </div>
 
             <div class="carousel-slide">
               <a href="https://www.instagram.com/p/DJPHHn2xZGl/" target="_blank" rel="noopener">
-                <img src="photos/lion_king_simba_cake.jpg" alt="Lion King Simba birthday cake">
+                <img src="photos/2025-05-03_lion_king_simba_cake.jpg" alt="Lion King Simba birthday cake">
               </a>
               <div class="hero-photo-caption">Lion King</div>
             </div>
 
             <div class="carousel-slide">
               <a href="https://www.instagram.com/p/DV6URjAkY2G/" target="_blank" rel="noopener">
-                <img src="photos/dogman_and_petey.jpg" alt="Dog Man and Petey cake">
+                <img src="photos/2026-03-14_dogman_and_petey_cupcakes.jpg" alt="Dog Man and Petey cake">
               </a>
               <div class="hero-photo-caption">Dog Man and Petey</div>
             </div>
 
             <div class="carousel-slide">
               <a href="https://www.instagram.com/p/DJxNUp8S1fe/" target="_blank" rel="noopener">
-                <img src="photos/pink_ruffle_ombre_cake.jpg" alt="Pink ruffle ombre cake">
+                <img src="photos/2025-05-16_pink_ruffle_ombre_cake.jpg" alt="Pink ruffle ombre cake">
               </a>
               <div class="hero-photo-caption">Just pink ombre</div>
             </div>
 
             <div class="carousel-slide">
               <a href="https://www.instagram.com/p/DHRh_Z1yv6N/" target="_blank" rel="noopener">
-                <img src="photos/wolf_disco_birthday_cake.jpg" alt="Wolf disco birthday cake">
+                <img src="photos/2025-03-15_wolf_disco_birthday_cake.jpg" alt="Wolf disco birthday cake">
               </a>
               <div class="hero-photo-caption">Disco wolfpack</div>
             </div>
 
             <div class="carousel-slide">
               <a href="https://www.instagram.com/p/DPNJxCwEalb/" target="_blank" rel="noopener">
-                <img src="photos/donkey_kong_barrel_cake.jpg" alt="Donkey Kong barrel cake">
+                <img src="photos/2025-09-29_donkey_kong_barrel_cake.jpg" alt="Donkey Kong barrel cake">
               </a>
               <div class="hero-photo-caption">Donkey Kong</div>
             </div>
@@ -267,7 +267,7 @@
     </div>
   </footer>
 
-  <script src="nav.js"></script>
+  <script src="js/nav.js"></script>
   <script>
     // Fade-in
     document.querySelectorAll('.fade-in').forEach(el => {
@@ -297,10 +297,15 @@
       storyDots.children[storyCurrent].classList.add('active');
     }
 
-    document.getElementById('storyCarouselPrev').addEventListener('click', () => storyGoTo(storyCurrent - 1));
-    document.getElementById('storyCarouselNext').addEventListener('click', () => storyGoTo(storyCurrent + 1));
+    let storyAutoplay = setInterval(() => storyGoTo(storyCurrent + 1), 6000);
 
-    setInterval(() => storyGoTo(storyCurrent + 1), 6000);
+    function resetStoryAutoplay() {
+      clearInterval(storyAutoplay);
+      storyAutoplay = setInterval(() => storyGoTo(storyCurrent + 1), 6000);
+    }
+
+    document.getElementById('storyCarouselPrev').addEventListener('click', () => { storyGoTo(storyCurrent - 1); resetStoryAutoplay(); });
+    document.getElementById('storyCarouselNext').addEventListener('click', () => { storyGoTo(storyCurrent + 1); resetStoryAutoplay(); });
   </script>
 </body>
 </html>
