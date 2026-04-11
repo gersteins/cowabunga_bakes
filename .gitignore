@@ -7,3 +7,9 @@
 
 # Claude Code
 .claude/
+
+# Photo sync tracking
+scripts/.synced_photo_ids
+
+# Python virtual environment
+.venv/

@@ -318,7 +318,7 @@
     fetch('photos/photos.json')
       .then(r => r.json())
       .then(data => {
-        photos = data;
+        photos = data.photos || data;
 
         photos.forEach((photo, i) => {
           const item = document.createElement('div');
