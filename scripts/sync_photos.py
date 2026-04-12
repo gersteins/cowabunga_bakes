@@ -61,6 +61,38 @@ def write_manifest(filename_to_uuid):
     print(f"Updated manifest: {len(photos)} photos → docs/photos/photos.json")
 
 
+SRGB_PROFILE = "/System/Library/ColorSync/Profiles/sRGB Profile.icc"
+
+
+def normalize_photo(path: Path):
+    """Convert to sRGB and normalize JFIF header via sips.
+
+    Fixes two Safari/iOS rendering bugs seen in the wild:
+      - Apple Poppy wide-gamut color profile → broken image on iOS Safari
+      - Non-standard JFIF header (density 300x300, segment length 20) → broken on iOS Safari
+    Running sips --matchTo sRGB re-encodes the file and resolves both.
+    """
+    result = subprocess.run(
+        ["sips", "-g", "iccProfileName", str(path)],
+        capture_output=True, text=True,
+    )
+    profile = result.stdout.split("iccProfileName:")[-1].strip() if "iccProfileName:" in result.stdout else "unknown"
+
+    if profile != "sRGB IEC61966-2.1":
+        print(f"  Color profile '{profile}' — converting to sRGB...")
+        subprocess.run(
+            ["sips", "--matchTo", SRGB_PROFILE, str(path)],
+            capture_output=True, check=True,
+        )
+        print("  Converted to sRGB.")
+    else:
+        # Re-encode anyway to normalize the JFIF header
+        subprocess.run(
+            ["sips", "--matchTo", SRGB_PROFILE, str(path)],
+            capture_output=True, check=True,
+        )
+
+
 def slugify(text):
     text = text.strip().lower()
     text = re.sub(r"[^a-z0-9 ]", "", text)
@@ -73,7 +105,19 @@ def git_commit_and_push(filenames, oldest_date):
     count = len(filenames)
     date_str = oldest_date.strftime("%Y-%m-%d")
     commit_msg = f"adding {count} photo{'s' if count != 1 else ''} created after {date_str}"
-    print(f'\nCommitting: "{commit_msg}"')
+
+    print(f'\nReady to commit: "{commit_msg}"')
+    print("Files to be added:")
+    for filename in filenames:
+        print(f"  docs/photos/{filename}")
+    print("  docs/photos/photos.json")
+    print(f"\nTest locally at: http://localhost:3000/gallery")
+
+    answer = input("\nCommit and push? [y/N] ").strip().lower()
+    if answer != "y":
+        print("Skipped. Files are saved locally — run 'git add/commit/push' manually when ready.")
+        return
+
     for filename in filenames:
         subprocess.run(["git", "-C", str(REPO_DIR), "add", f"docs/photos/{filename}"], check=True)
     subprocess.run(["git", "-C", str(REPO_DIR), "add", "docs/photos/photos.json"], check=True)
@@ -149,6 +193,7 @@ def main():
 
         tmp_path.rename(dest)
         print(f"  Saved: docs/photos/{filename}")
+        normalize_photo(dest)
 
         filename_to_uuid[filename] = photo.uuid
         added_filenames.append(filename)
