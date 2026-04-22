@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZT3Q25N7N7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZT3Q25N7N7');
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Menu — Cowabunga Bakes</title>
@@ -33,21 +41,43 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 28px;
+      overflow: hidden;
       transition: box-shadow var(--transition), transform var(--transition);
     }
 
     .menu-card:hover {
-      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+      transform: translateY(-3px);
+    }
+
+    .menu-card:hover .menu-card-img img {
+      transform: scale(1.04);
+    }
+
+    .menu-card-img {
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: var(--rose-light);
+    }
+
+    .menu-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .menu-card-body {
+      padding: 20px 22px 24px;
     }
 
     .menu-card h2 {
       font-family: var(--font-serif), serif;
       font-style: italic;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 600;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       padding-bottom: 12px;
       border-bottom: 1px solid var(--border);
     }
@@ -171,6 +201,7 @@
 
     @media (max-width: 580px) {
       .menu-grid { grid-template-columns: 1fr; }
+      .menu-card-img { aspect-ratio: 3 / 2; }
     }
   </style>
 </head>
@@ -208,66 +239,96 @@
 
       <div class="menu-grid">
         <div class="menu-card fade-in">
-          <h2>Cupcake Pull-Apart Cakes</h2>
-          <div class="menu-row">
-            <span class="label">24 cupcakes</span>
-            <span class="price">from $160</span>
+          <div class="menu-card-img">
+            <img src="photos/menu-pics/pull-apart-cupcake-cake.jpeg" alt="Cupcake pull-apart cake" loading="lazy">
           </div>
-          <div class="menu-row">
-            <span class="label">36 cupcakes</span>
-            <span class="price">from $215</span>
+          <div class="menu-card-body">
+            <h2>Cupcake Pull-Apart Cakes</h2>
+            <div class="menu-row">
+              <span class="label">24 cupcakes</span>
+              <span class="price">from $160</span>
+            </div>
+            <div class="menu-row">
+              <span class="label">36 cupcakes</span>
+              <span class="price">from $215</span>
+            </div>
           </div>
         </div>
 
         <div class="menu-card fade-in fade-in-delay-1">
-          <h2>Round Cakes</h2>
-          <div class="menu-row">
-            <span class="label">6" round · serves ~8–10</span>
-            <span class="price">from $110</span>
+          <div class="menu-card-img">
+            <img src="photos/menu-pics/round-cake.jpeg" alt="Round cake" loading="lazy">
           </div>
-          <div class="menu-row">
-            <span class="label">8" round · serves ~16–20</span>
-            <span class="price">from $160</span>
-          </div>
-          <div class="menu-row">
-            <span class="label">9" round · serves ~20–24</span>
-            <span class="price">from $180</span>
+          <div class="menu-card-body">
+            <h2>Round Cakes</h2>
+            <div class="menu-row">
+              <span class="label">6" round · serves ~8–10</span>
+              <span class="price">from $110</span>
+            </div>
+            <div class="menu-row">
+              <span class="label">8" round · serves ~16–20</span>
+              <span class="price">from $160</span>
+            </div>
+            <div class="menu-row">
+              <span class="label">9" round · serves ~20–24</span>
+              <span class="price">from $180</span>
+            </div>
           </div>
         </div>
 
         <div class="menu-card fade-in fade-in-delay-2">
-          <h2>Sheet Cakes</h2>
-          <div class="menu-row">
-            <span class="label">Quarter Sheet · serves ~18–22</span>
-            <span class="price">from $170</span>
+          <div class="menu-card-img">
+            <img src="photos/menu-pics/sheet-cake.jpeg" alt="Sheet cake" loading="lazy">
           </div>
-          <div class="menu-row">
-            <span class="label">Half Sheet · serves ~35–40</span>
-            <span class="price">from $215</span>
+          <div class="menu-card-body">
+            <h2>Sheet Cakes</h2>
+            <div class="menu-row">
+              <span class="label">Quarter Sheet · serves ~18–22</span>
+              <span class="price">from $170</span>
+            </div>
+            <div class="menu-row">
+              <span class="label">Half Sheet · serves ~35–40</span>
+              <span class="price">from $215</span>
+            </div>
           </div>
         </div>
 
         <div class="menu-card fade-in">
-          <h2>Cupcakes</h2>
-          <div class="menu-row" style="margin-top:10px">
-            <span class="label">Per dozen</span>
-            <span class="price">from $85</span>
+          <div class="menu-card-img">
+            <img src="photos/menu-pics/cupcakes.jpeg" alt="Cupcakes" loading="lazy">
+          </div>
+          <div class="menu-card-body">
+            <h2>Cupcakes</h2>
+            <div class="menu-row">
+              <span class="label">Per dozen</span>
+              <span class="price">from $85</span>
+            </div>
           </div>
         </div>
 
         <div class="menu-card fade-in fade-in-delay-1">
-          <h2>Cake Pops</h2>
-          <div class="menu-row">
-            <span class="label">Two dozen (minimum)</span>
-            <span class="price">from $120</span>
+          <div class="menu-card-img">
+            <img src="photos/menu-pics/cake-pops.jpeg" alt="Cake pops" loading="lazy">
+          </div>
+          <div class="menu-card-body">
+            <h2>Cake Pops</h2>
+            <div class="menu-row">
+              <span class="label">Two dozen (minimum)</span>
+              <span class="price">from $120</span>
+            </div>
           </div>
         </div>
 
         <div class="menu-card fade-in fade-in-delay-2">
-          <h2>Sugar Cookies</h2>
-          <div class="menu-row">
-            <span class="label">Two dozen (minimum)</span>
-            <span class="price">from $110</span>
+          <div class="menu-card-img">
+            <img src="photos/menu-pics/sugar-cookies.jpeg" alt="Sugar cookies" loading="lazy">
+          </div>
+          <div class="menu-card-body">
+            <h2>Sugar Cookies</h2>
+            <div class="menu-row">
+              <span class="label">Two dozen (minimum)</span>
+              <span class="price">from $110</span>
+            </div>
           </div>
         </div>
       </div>
@@ -333,6 +394,7 @@
       <div class="footer-legal">
         <p>Items are prepared in a home kitchen. Allergen cross-contamination cannot be guaranteed.</p>
         <p>&copy; 2026 Cowabunga Bakes · All rights reserved</p>
+        <p>This site uses cookies via Google Analytics.</p>
       </div>
     </div>
   </footer>

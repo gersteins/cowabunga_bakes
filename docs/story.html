@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZT3Q25N7N7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZT3Q25N7N7');
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Story — Cowabunga Bakes</title>
@@ -9,6 +17,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap" rel="stylesheet">
   <style>
     body { background: var(--surface); }
 
@@ -131,10 +140,24 @@
     .carousel-arrow.next { right: 10px; }
 
     .story-cta {
-      margin-top: 40px;
+      margin-top: 24px;
       display: flex;
       gap: 14px;
       flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .story-signature {
+      font-family: 'Alex Brush', cursive;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--rose);
+      margin-top: 4px;
+      margin-bottom: 28px;
+      text-align: right;
+      padding-right: 10%;
+
+
     }
 
     @media (max-width: 900px) {
@@ -181,10 +204,8 @@
           <p>What I love most about this work is the collaboration. Every order starts with a conversation. I design every product custom to the request of my amazing clients — or their kids — and their <em>wonderful, fantastical ideas</em>.</p>
           <p>The visions that make me happiest are the ones that are short, sweet, and completely wild. The kind that arrive with total confidence and zero compromise.</p>
 
-          <div class="story-cta">
-            <a href="/contact" class="btn btn-primary">Order a Cake</a>
-            <a href="/gallery" class="btn btn-secondary">See the Gallery</a>
-          </div>
+          <h1 class="story-signature">- Maya</h1>
+
         </div>
 
         <div class="story-sidebar fade-in fade-in-delay-1" style="padding-top: 3rem;">
@@ -243,6 +264,11 @@
             <button class="carousel-arrow next" id="storyCarouselNext" aria-label="Next photo">&#8594;</button>
             <div class="carousel-dots" id="storyCarouselDots"></div>
           </div>
+
+          <div class="story-cta">
+            <a href="/contact" class="btn btn-primary">Order a Cake</a>
+            <a href="/gallery" class="btn btn-secondary">See the Gallery</a>
+          </div>
         </div>
       </div>
     </div>
@@ -263,6 +289,7 @@
       <div class="footer-legal">
         <p>Items are prepared in a home kitchen. Allergen cross-contamination cannot be guaranteed.</p>
         <p>&copy; 2026 Cowabunga Bakes · All rights reserved</p>
+        <p>This site uses cookies via Google Analytics.</p>
       </div>
     </div>
   </footer>
