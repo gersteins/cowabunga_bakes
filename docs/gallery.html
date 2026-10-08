@@ -318,6 +318,12 @@
   <script>
 
     // ── Derive alt text from filename ───────────────────────────────────────
+    // Grid tiles use a small WebP; the lightbox keeps the full-size original.
+    // Thumbnails are matched by filename convention (see scripts/make_thumbs.py).
+    function thumbFor(filename) {
+      return 'photos/thumbs/' + filename.replace(/\.[^.]+$/, '') + '.webp';
+    }
+
     function altFromFilename(filename) {
       return filename.replace(/\.[^.]+$/, '').replace(/^\d{4}-\d{2}-\d{2}_/, '')
         .replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase());
@@ -341,9 +347,15 @@
           item.className = 'photo-item';
 
           const img = document.createElement('img');
-          img.src = 'photos/' + photo.filename;
+          img.src = thumbFor(photo.filename);
           img.alt = altFromFilename(photo.filename);
           img.loading = 'lazy';
+          // If a thumbnail is missing, fall back to the full-size original
+          // rather than showing a broken image.
+          img.addEventListener('error', function onMissingThumb() {
+            img.removeEventListener('error', onMissingThumb);
+            img.src = 'photos/' + photo.filename;
+          });
 
           const overlay = document.createElement('div');
           overlay.className = 'overlay';
