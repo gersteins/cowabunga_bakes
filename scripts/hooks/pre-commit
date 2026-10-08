@@ -1,0 +1,44 @@
+#!/bin/bash
+# Run the site consistency tests before allowing a commit.
+#
+# Enable once per clone with:
+#     git config core.hooksPath scripts/hooks
+#
+# Bypass for a work-in-progress commit with:
+#     git commit --no-verify
+
+set -u
+
+REPO="$(git rev-parse --show-toplevel)"
+PYTHON="$REPO/.venv/bin/python"
+
+if [ ! -x "$PYTHON" ]; then
+  echo "pre-commit: no .venv found — skipping site tests."
+  echo "            create it with: python3 -m venv .venv && .venv/bin/pip install -r requirements.txt"
+  exit 0
+fi
+
+if ! "$PYTHON" -c "import pytest" 2>/dev/null; then
+  echo "pre-commit: pytest not installed — skipping site tests."
+  echo "            install with: .venv/bin/pip install -r requirements.txt"
+  exit 0
+fi
+
+echo "pre-commit: running site consistency tests..."
+if ! "$PYTHON" -m pytest "$REPO/tests" -q --no-header; then
+  cat <<'EOF'
+
+pre-commit: FAILED — commit aborted.
+
+Common causes and fixes:
+  menu prices out of sync .... update the JSON-LD block in docs/menu.html
+  missing thumbnails ......... .venv/bin/python scripts/make_thumbs.py
+  stale sitemap dates ........ .venv/bin/python scripts/make_sitemap.py
+  photo not in sRGB .......... sips --matchTo '/System/Library/ColorSync/Profiles/sRGB Profile.icc' <file>
+
+Commit anyway (not recommended): git commit --no-verify
+EOF
+  exit 1
+fi
+
+exit 0

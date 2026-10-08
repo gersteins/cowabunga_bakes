@@ -1,0 +1,7 @@
+# Photo sync (scripts/sync_photos.py, scripts/make_thumbs.py)
+osxphotos==0.75.6
+pillow==12.3.0
+
+# Site consistency tests (tests/)
+pytest==9.1.1
+beautifulsoup4==4.14.3

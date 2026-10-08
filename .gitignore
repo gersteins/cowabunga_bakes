@@ -13,3 +13,7 @@ scripts/.synced_photo_ids
 
 # Python virtual environment
 .venv/
+# Python caches
+__pycache__/
+*.pyc
+.pytest_cache/
