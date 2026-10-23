@@ -154,3 +154,48 @@ def test_cname_matches_the_canonical_domain():
     assert DOMAIN == f"https://{cname}", (
         f"CNAME is {cname!r} but pages and sitemap use {DOMAIN}"
     )
+
+
+# ── The QR code redirect ────────────────────────────────────────────────────
+# The printed QR code points at /qr. It must keep working forever, since the
+# codes already in the wild can't be reprinted.
+
+QR = "qr.html"
+QR_TARGET = "/?utm_source=qr&utm_medium=print&utm_campaign=qr_code"
+
+
+def test_qr_page_exists():
+    assert (DOCS / QR).is_file(), "docs/qr.html is missing — printed QR codes will 404"
+
+
+def test_qr_redirects_to_home_with_utm_tags():
+    """Without the UTM tags, QR visits are indistinguishable in Analytics."""
+    soup = soup_for(QR)
+    refresh = soup.find("meta", attrs={"http-equiv": "refresh"})
+    assert refresh and refresh["content"] == f"0; url={QR_TARGET}"
+    assert f'location.replace("{QR_TARGET}")' in read_page(QR)
+    assert soup.find("a", href=QR_TARGET), "qr.html has no fallback link"
+
+
+def test_qr_page_has_no_analytics_tag():
+    """Tagging the redirect hop too would count every QR visit twice."""
+    assert "googletagmanager" not in read_page(QR)
+
+
+def test_qr_is_noindex_and_not_in_sitemap():
+    assert meta_content(soup_for(QR), name="robots") == "noindex"
+    assert "/qr<" not in (DOCS / "sitemap.xml").read_text()
+
+
+def test_home_page_records_utm_tags_before_hiding_them():
+    """The home page strips utm_* from the address bar for looks.
+
+    gtag.js loads async, so by the time it runs the URL is already clean —
+    config must pass page_location explicitly or QR attribution is lost.
+    """
+    html = read_page("index.html")
+    config = html.find("gtag('config', 'G-ZT3Q25N7N7', { page_location: location.href })")
+    strip = html.find("history.replaceState")
+    assert config != -1, "index.html gtag config does not capture page_location"
+    assert strip != -1, "index.html does not strip utm_* from the address bar"
+    assert config < strip, "page_location must be captured before the URL is cleaned"

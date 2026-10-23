@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Target of the printed QR code (https://cowabungabakes.com/qr).
+
+       Forwards to the home page with UTM tags, so QR visits show up in
+       Google Analytics under Reports → Acquisition → Traffic acquisition
+       as session source / medium "qr / print".
+
+       No gtag here: the home page's tag records the visit with the UTM
+       attribution, and tagging this hop as well would double-count it.
+       The home page then strips the tags from the address bar. -->
+  <script>location.replace("/?utm_source=qr&utm_medium=print&utm_campaign=qr_code");</script>
+  <meta http-equiv="refresh" content="0; url=/?utm_source=qr&amp;utm_medium=print&amp;utm_campaign=qr_code">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Cowabunga Bakes</title>
+  <meta name="description" content="Redirecting to Cowabunga Bakes.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+  <p><a href="/?utm_source=qr&amp;utm_medium=print&amp;utm_campaign=qr_code">Continue to Cowabunga Bakes</a></p>
+</body>
+</html>

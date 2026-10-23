@@ -7,7 +7,20 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-ZT3Q25N7N7');
+    // page_location is captured now, before the cleanup below, so Analytics
+    // still sees the UTM tags that attribute the visit (e.g. from /qr).
+    gtag('config', 'G-ZT3Q25N7N7', { page_location: location.href });
+
+    // Then drop utm_* from the address bar so visitors see a clean URL.
+    (function () {
+      var url = new URL(location.href);
+      var keys = Array.from(url.searchParams.keys()).filter(function (k) {
+        return k.indexOf('utm_') === 0;
+      });
+      if (!keys.length) return;
+      keys.forEach(function (k) { url.searchParams.delete(k); });
+      history.replaceState(null, '', url.pathname + url.search + url.hash);
+    })();
   </script>
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
