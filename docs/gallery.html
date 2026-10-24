@@ -147,27 +147,48 @@
     /* noinspection CssUnusedSymbol */
     .lightbox.open { display: flex; }
 
-    .lightbox-inner {
-      position: relative;
-      max-width: min(90vw, 900px);
-      max-height: 90svh;
+    /* A strip of three slides — previous, current, next — side by side.
+       Swiping drags the whole strip, so the neighbouring photo slides in
+       with the finger, like a phone's photo app. */
+    .lb-viewport {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .lb-track {
+      position: absolute;
+      inset: 0;
+      will-change: transform;
+    }
+
+    /* noinspection CssUnusedSymbol */
+    .lb-track.animating {
+      transition: transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .lb-slide {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
-    .lightbox img {
-      max-width: 100%;
+    .lb-slide img {
+      max-width: min(90vw, 900px);
       max-height: 90svh;
       object-fit: contain;
       border-radius: 8px;
       display: block;
       width: auto;
-      transition: transform 0.2s ease-out;
+      -webkit-user-drag: none;
+      user-select: none;
     }
-
-    /* noinspection CssUnusedSymbol */
-    .lightbox img.dragging { transition: none; }
 
     .lightbox-close {
       position: fixed;
@@ -186,6 +207,7 @@
       justify-content: center;
       transition: background 0.2s;
       line-height: 1;
+      z-index: 1;
     }
 
     .lightbox-close:hover { background: rgba(255,255,255,0.22); }
@@ -207,8 +229,7 @@
       align-items: center;
       justify-content: center;
       transition: background 0.2s;
-      /* .lightbox-inner is positioned and comes later in the DOM, so without
-         this a wide photo paints over the left arrow. */
+      /* Keep the arrows above the photo strip, which fills the screen. */
       z-index: 1;
     }
 
@@ -225,6 +246,7 @@
       color: rgba(255,255,255,0.45);
       font-size: 0.8rem;
       font-family: var(--font-sans), sans-serif;
+      z-index: 1;
     }
 
     /* ── Responsive ── */
@@ -301,11 +323,15 @@
   </main>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <div class="lb-viewport">
+      <div class="lb-track" id="lb-track">
+        <div class="lb-slide"><img src="" alt=""></div>
+        <div class="lb-slide"><img src="" alt=""></div>
+        <div class="lb-slide"><img src="" alt=""></div>
+      </div>
+    </div>
     <button class="lightbox-close" id="lb-close" aria-label="Close">&#x2715;</button>
     <button class="lightbox-prev" id="lb-prev" aria-label="Previous">&#8592;</button>
-    <div class="lightbox-inner">
-      <img id="lb-img" src="" alt="">
-    </div>
     <button class="lightbox-next" id="lb-next" aria-label="Next">&#8594;</button>
     <div class="lightbox-counter" id="lb-counter"></div>
   </div>
@@ -348,7 +374,7 @@
     // ── Build grid from photos.json ─────────────────────────────────────────
     const grid = document.getElementById('photoGrid');
     const lightbox = document.getElementById('lightbox');
-    const lbImg = document.getElementById('lb-img');
+    const track = document.getElementById('lb-track');
     const lbCounter = document.getElementById('lb-counter');
     let photos = [];
     let current = 0;
@@ -398,31 +424,99 @@
     document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
 
     // ── Lightbox ────────────────────────────────────────────────────────────
+    // slides[0] holds the previous photo, slides[1] the current one and
+    // slides[2] the next. After a slide finishes, the elements are rotated
+    // rather than having their images swapped, so the photo that just slid
+    // in stays put and never flickers.
+    const GAP = 24;  // px of dark space between neighbouring photos
+    let slides = Array.from(track.children);
+    let animating = false;
+    let pendingDir = 0;
+    let animationTimer = null;
+
+    function wrap(i) {
+      return (i + photos.length) % photos.length;
+    }
+
+    function showPhoto(slide, index) {
+      const img = slide.firstElementChild;
+      const src = 'photos/' + photos[index].filename;
+      if (img.getAttribute('src') !== src) img.src = src;
+      img.alt = altFromFilename(photos[index].filename);
+    }
+
+    function layoutSlides() {
+      slides.forEach((slide, pos) => {
+        slide.style.left = `calc(${pos - 1} * (100% + ${GAP}px))`;
+        slide.setAttribute('aria-hidden', pos === 1 ? 'false' : 'true');
+      });
+      showPhoto(slides[1], current);
+      showPhoto(slides[0], wrap(current - 1));
+      showPhoto(slides[2], wrap(current + 1));
+      lbCounter.textContent = (current + 1) + ' / ' + photos.length;
+    }
+
+    function setTrack(transform, animate) {
+      track.classList.toggle('animating', animate);
+      track.style.transform = transform;
+    }
+
+    // Slide the strip one photo over (dir = 1 next, -1 previous), or back to
+    // centre (dir = 0). finishSlide() then settles the new state.
+    function slideTo(dir) {
+      finishSlide();
+      animating = true;
+      pendingDir = dir;
+      setTrack(`translateX(calc(${-dir} * (100% + ${GAP}px)))`, true);
+      // transitionend is skipped if nothing moved or the tab is hidden.
+      animationTimer = setTimeout(finishSlide, 400);
+    }
+
+    function finishSlide() {
+      if (!animating) return;
+      animating = false;
+      clearTimeout(animationTimer);
+      if (pendingDir) {
+        current = wrap(current + pendingDir);
+        slides = pendingDir > 0
+          ? [slides[1], slides[2], slides[0]]
+          : [slides[2], slides[0], slides[1]];
+      }
+      pendingDir = 0;
+      setTrack('', false);
+      layoutSlides();
+    }
+
+    track.addEventListener('transitionend', e => {
+      if (e.target === track) finishSlide();
+    });
+
     function openLightbox(index) {
+      finishSlide();
       current = index;
-      lbImg.src = 'photos/' + photos[index].filename;
-      lbImg.alt = altFromFilename(photos[index].filename);
-      lbCounter.textContent = (index + 1) + ' / ' + photos.length;
+      setTrack('', false);
+      layoutSlides();
       lightbox.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
 
     function closeLightbox() {
+      finishSlide();
       lightbox.classList.remove('open');
       document.body.style.overflow = '';
     }
 
     function navigate(dir) {
-      current = (current + dir + photos.length) % photos.length;
-      lbImg.src = 'photos/' + photos[current].filename;
-      lbImg.alt = altFromFilename(photos[current].filename);
-      lbCounter.textContent = (current + 1) + ' / ' + photos.length;
+      if (photos.length > 1) slideTo(dir);
     }
 
     document.getElementById('lb-close').addEventListener('click', closeLightbox);
     document.getElementById('lb-prev').addEventListener('click', () => navigate(-1));
     document.getElementById('lb-next').addEventListener('click', () => navigate(1));
-    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    // A click on the dark area around the photo closes the viewer.
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox || e.target.classList.contains('lb-slide')) closeLightbox();
+    });
     document.addEventListener('keydown', e => {
       if (!lightbox.classList.contains('open')) return;
       if (e.key === 'Escape') closeLightbox();
@@ -431,51 +525,67 @@
     });
 
     // ── Swipe between photos on touch devices ───────────────────────────────
-    // The photo follows the finger, then either advances or snaps back.
-    const SWIPE_MIN_PX = 50;
-    let touchStartX = null;
-    let touchStartY = 0;
+    // The strip follows the finger. On release it moves on to the neighbour
+    // if dragged far enough or flicked fast enough, otherwise springs back.
+    const COMMIT_FRACTION = 0.2;   // of screen width
+    const FLICK_SPEED = 0.3;       // px per ms
+    const AXIS_LOCK_PX = 8;        // movement before deciding swipe vs scroll
+    let drag = null;
 
     function isPageZoomed() {
       // When pinch-zoomed in, a horizontal drag should pan the photo.
       return window.visualViewport && window.visualViewport.scale > 1.01;
     }
 
+    function cancelDrag() {
+      if (drag && drag.axis === 'x') slideTo(0);
+      drag = null;
+    }
+
     lightbox.addEventListener('touchstart', e => {
-      if (e.touches.length !== 1 || isPageZoomed()) { touchStartX = null; return; }
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-      lbImg.classList.add('dragging');
+      if (e.touches.length !== 1 || isPageZoomed() || photos.length < 2) {
+        cancelDrag();  // a second finger means pinch, not swipe
+        return;
+      }
+      finishSlide();  // let a new swipe interrupt one still settling
+      const t = e.touches[0];
+      drag = { x0: t.clientX, y0: t.clientY, dx: 0, axis: null,
+               samples: [{ x: t.clientX, t: e.timeStamp }] };
     }, { passive: true });
 
     lightbox.addEventListener('touchmove', e => {
-      if (touchStartX === null) return;
-      if (e.touches.length !== 1) {  // a second finger means pinch, not swipe
-        touchStartX = null;
-        lbImg.classList.remove('dragging');
-        lbImg.style.transform = '';
-        return;
+      if (!drag) return;
+      if (e.touches.length !== 1) { cancelDrag(); return; }
+      const t = e.touches[0];
+      const dx = t.clientX - drag.x0;
+      const dy = t.clientY - drag.y0;
+      if (!drag.axis) {
+        if (Math.abs(dx) < AXIS_LOCK_PX && Math.abs(dy) < AXIS_LOCK_PX) return;
+        drag.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
       }
-      lbImg.style.transform = `translateX(${e.touches[0].clientX - touchStartX}px)`;
+      if (drag.axis !== 'x') return;
+      drag.dx = dx;
+      drag.samples.push({ x: t.clientX, t: e.timeStamp });
+      while (drag.samples.length > 2 && e.timeStamp - drag.samples[0].t > 100) {
+        drag.samples.shift();
+      }
+      setTrack(`translateX(${dx}px)`, false);
     }, { passive: true });
 
     lightbox.addEventListener('touchend', e => {
-      if (touchStartX === null) return;
-      const dx = e.changedTouches[0].clientX - touchStartX;
-      const dy = e.changedTouches[0].clientY - touchStartY;
-      touchStartX = null;
-      lbImg.classList.remove('dragging');
-      lbImg.style.transform = '';
-      if (Math.abs(dx) >= SWIPE_MIN_PX && Math.abs(dx) > Math.abs(dy)) {
-        navigate(dx < 0 ? 1 : -1);  // swipe left → next photo
-      }
+      if (!drag) return;
+      const d = drag;
+      drag = null;
+      if (d.axis !== 'x') return;
+      const first = d.samples[0];
+      const last = d.samples[d.samples.length - 1];
+      const velocity = (last.x - first.x) / Math.max(last.t - first.t, 1);
+      const farEnough = Math.abs(d.dx) > lightbox.clientWidth * COMMIT_FRACTION;
+      const flicked = Math.abs(velocity) > FLICK_SPEED && Math.sign(velocity) === Math.sign(d.dx);
+      slideTo(farEnough || flicked ? (d.dx < 0 ? 1 : -1) : 0);  // swipe left → next
     });
 
-    lightbox.addEventListener('touchcancel', () => {
-      touchStartX = null;
-      lbImg.classList.remove('dragging');
-      lbImg.style.transform = '';
-    });
+    lightbox.addEventListener('touchcancel', cancelDrag);
   </script>
 </body>
 </html>
