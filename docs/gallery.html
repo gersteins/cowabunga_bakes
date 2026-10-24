@@ -140,6 +140,8 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+      /* Horizontal swipes are ours (photo navigation); pinch-zoom stays native. */
+      touch-action: pinch-zoom;
     }
 
     /* noinspection CssUnusedSymbol */
@@ -161,7 +163,11 @@
       border-radius: 8px;
       display: block;
       width: auto;
+      transition: transform 0.2s ease-out;
     }
+
+    /* noinspection CssUnusedSymbol */
+    .lightbox img.dragging { transition: none; }
 
     .lightbox-close {
       position: fixed;
@@ -201,6 +207,9 @@
       align-items: center;
       justify-content: center;
       transition: background 0.2s;
+      /* .lightbox-inner is positioned and comes later in the DOM, so without
+         this a wide photo paints over the left arrow. */
+      z-index: 1;
     }
 
     .lightbox-prev { left: 16px; }
@@ -230,6 +239,13 @@
       }
       .lightbox-prev { left: 8px; }
       .lightbox-next { right: 8px; }
+    }
+
+    /* Touch devices (phones, iPads) swipe between photos instead. An iPad
+       with a trackpad reports a fine pointer and keeps the arrows. */
+    @media (hover: none) and (pointer: coarse) {
+      .lightbox-prev,
+      .lightbox-next { display: none; }
     }
   </style>
 </head>
@@ -412,6 +428,53 @@
       if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowLeft') navigate(-1);
       if (e.key === 'ArrowRight') navigate(1);
+    });
+
+    // ── Swipe between photos on touch devices ───────────────────────────────
+    // The photo follows the finger, then either advances or snaps back.
+    const SWIPE_MIN_PX = 50;
+    let touchStartX = null;
+    let touchStartY = 0;
+
+    function isPageZoomed() {
+      // When pinch-zoomed in, a horizontal drag should pan the photo.
+      return window.visualViewport && window.visualViewport.scale > 1.01;
+    }
+
+    lightbox.addEventListener('touchstart', e => {
+      if (e.touches.length !== 1 || isPageZoomed()) { touchStartX = null; return; }
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      lbImg.classList.add('dragging');
+    }, { passive: true });
+
+    lightbox.addEventListener('touchmove', e => {
+      if (touchStartX === null) return;
+      if (e.touches.length !== 1) {  // a second finger means pinch, not swipe
+        touchStartX = null;
+        lbImg.classList.remove('dragging');
+        lbImg.style.transform = '';
+        return;
+      }
+      lbImg.style.transform = `translateX(${e.touches[0].clientX - touchStartX}px)`;
+    }, { passive: true });
+
+    lightbox.addEventListener('touchend', e => {
+      if (touchStartX === null) return;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      touchStartX = null;
+      lbImg.classList.remove('dragging');
+      lbImg.style.transform = '';
+      if (Math.abs(dx) >= SWIPE_MIN_PX && Math.abs(dx) > Math.abs(dy)) {
+        navigate(dx < 0 ? 1 : -1);  // swipe left → next photo
+      }
+    });
+
+    lightbox.addEventListener('touchcancel', () => {
+      touchStartX = null;
+      lbImg.classList.remove('dragging');
+      lbImg.style.transform = '';
     });
   </script>
 </body>
